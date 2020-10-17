@@ -1,10 +1,28 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/NunitoTextView</item>
+        <item name="android:buttonStyle">@style/NunitoButton</item>
+    </style>
+    <style name="NunitoTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/nunito_light</item>
     </style>
 
+    <style name="NunitoButton" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/nunito_light</item>
+    </style>
+    <style name="FragmentButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearanceOverlay">@style/MyShapeAppearance3</item>
+    </style>
+    <style name="MyShapeAppearance3">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">15dp</item>
+        <item name="cornerSizeBottomLeft">15dp</item>
+        <item name="cornerSizeTopRight">15dp</item>
+        <item name="cornerSizeBottomRight">15dp</item>
+    </style>
 </resources>
