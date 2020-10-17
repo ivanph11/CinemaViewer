@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -28,7 +29,7 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
     private  val TAG = "CinemaDetailsFragment"
     private var navController: NavController? = null
     private val viewModel: CinemaDetailsViewModel by viewModels()
-
+    private lateinit var theater:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setStateEvent(CinemaDetailsStateEvent.GetMovieEvent)
@@ -108,7 +109,8 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
         cast.text = outputCast.substring(0,outputCast.length-1)
         release_date.text = convertDate(movie.releaseDate)
         synopsis.text = movie.synopsis
-
+        theater=movie.theater
+        Log.d(TAG,"Theater:"+movie.theater)
     }
 
     private fun convertDate(releaseDate:String):String{
@@ -132,7 +134,8 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
     override fun onClick(view: View?) {
         when(view?.id){
             R.id.btnToSeatMap->{
-                navController?.navigate(R.id.action_cinemaDetailsFragment_to_seatFragment)
+                val bundle = bundleOf( "theater" to theater)
+                navController?.navigate(R.id.action_cinemaDetailsFragment_to_seatFragment,bundle)
             }
         }
     }

@@ -18,5 +18,9 @@
         android:id="@+id/seatFragment"
         android:name="com.felz.cinemaviewer.ui.SeatFragment"
         android:label="fragment_seat"
-        tools:layout="@layout/fragment_seat" />
+        tools:layout="@layout/fragment_seat" >
+        <argument
+            android:name="theater"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -2,6 +2,7 @@ package com.felz.cinemaviewer.di
 
 import com.felz.cinemaviewer.network.MovieNetworkMapper
 import com.felz.cinemaviewer.network.MovieRetrofit
+import com.felz.cinemaviewer.network.ScheduleNetworkMapper
 import com.felz.cinemaviewer.repository.MainRepository
 import dagger.Module
 import dagger.Provides
@@ -16,9 +17,10 @@ class RepositoryModule{
     @Provides
     fun provideMainRepository(
         retrofit:MovieRetrofit,
-        networkMapper:MovieNetworkMapper
+        networkMapper:MovieNetworkMapper,
+        networkMapperSchedule: ScheduleNetworkMapper
     ):MainRepository{
-        return MainRepository(retrofit,networkMapper)
+        return MainRepository(retrofit,networkMapper,networkMapperSchedule)
     }
 
 
