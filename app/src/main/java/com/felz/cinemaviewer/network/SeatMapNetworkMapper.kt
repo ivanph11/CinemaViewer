@@ -9,13 +9,15 @@ class SeatMapNetworkMapper
 constructor():EntityMapper<SeatMapNetworkEntity,SeatMap>{
     override fun mapFromEntity(entity: SeatMapNetworkEntity): SeatMap {
         return SeatMap(
-            seatMap = entity.seatMap
+            seatMap = entity.seatMap,
+            seatMapAvailable = entity.seatMapAvailable
         )
     }
 
     override fun mapToEntity(domainModel: SeatMap): SeatMapNetworkEntity {
         return SeatMapNetworkEntity(
-            seatMap = domainModel.seatMap
+            seatMap = domainModel.seatMap,
+            seatMapAvailable = domainModel.seatMapAvailable
         )
     }
 }

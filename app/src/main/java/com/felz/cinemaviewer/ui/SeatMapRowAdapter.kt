@@ -18,14 +18,16 @@ class SeatMapRowAdapter(
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private  val TAG = "SeatMapRowAdapter"
     private var items: List<List<String>> = ArrayList()
+    private var availableSeats: List<String> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SeatDateViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_seat_row,parent,false)
         )
     }
-    fun submitList(itemList:List<List<String>>){
+    fun submitList(itemList:List<List<String>>,seatAvailable:List<String>){
         Log.d(TAG,"List Received:"+itemList.size)
         items=itemList
+        availableSeats=seatAvailable
         notifyDataSetChanged()
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -53,7 +55,7 @@ class SeatMapRowAdapter(
             var label = row.get(0).substring(0,1)
             txtRight.setText(label.toUpperCase())
             txtLeft.setText(label.toUpperCase())
-            seatMapColAdapter.submitList(row)
+            seatMapColAdapter.submitList(row,availableSeats)
             itemView.setOnClickListener{
                 it.isSelected=true
                 notifyDataSetChanged()

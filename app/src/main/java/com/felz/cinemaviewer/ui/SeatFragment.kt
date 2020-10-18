@@ -103,8 +103,9 @@ class SeatFragment : Fragment(),OnItemClickListener {
             when(dataState){
                 is DataState.Success<SeatMap>->{
                     displayProgressBar(false)
-                    Log.d(TAG,"SeatMap:"+dataState.data.seatMap.size)
-                    seatMapRowAdapter.submitList(dataState.data.seatMap)
+                    Log.d(TAG,"SeatMap:"+dataState.data.seatMapAvailable.seats.size)
+
+                    seatMapRowAdapter.submitList(dataState.data.seatMap,dataState.data.seatMapAvailable.seats)
                 }
                 is DataState.Error->{
                     Log.d(TAG,"SeatMap:Error")

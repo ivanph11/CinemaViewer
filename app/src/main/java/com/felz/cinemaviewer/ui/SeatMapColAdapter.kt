@@ -20,14 +20,16 @@ class SeatMapColAdapter(
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private  val TAG = "SeatMapColAdapter"
     private var items: List<String> = ArrayList()
+    private var availableSeats: List<String> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SeatDateViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_seat_col,parent,false)
         )
     }
-    fun submitList(itemList:List<String>){
+    fun submitList(itemList:List<String>,seatAvailable:List<String>){
         Log.d(TAG,"List Received:"+itemList.size)
         items=itemList
+        availableSeats=seatAvailable
         notifyDataSetChanged()
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -49,10 +51,12 @@ class SeatMapColAdapter(
             if(col.equals("a(30)",true)){
                 btnCol.visibility=View.INVISIBLE
             }
-
-            if(col.equals("F19")){
+            if(!availableSeats.contains(col)){
                 btnCol.isEnabled=false
             }
+//            if(col.equals("F19")){
+//                btnCol.isEnabled=false
+//            }
             btnCol.setOnClickListener{view->
                 listener.onMapClick(col)
                view.isSelected = !view.isSelected
