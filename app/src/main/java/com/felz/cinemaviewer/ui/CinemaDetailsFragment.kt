@@ -21,9 +21,8 @@ import com.felz.cinemaviewer.model.Movie
 import com.felz.cinemaviewer.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_cinema_details.*
-import kotlinx.android.synthetic.main.fragment_cinema_details.progress_bar
-import kotlinx.android.synthetic.main.fragment_seat.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
 @ExperimentalCoroutinesApi
@@ -131,14 +130,17 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
     }
 
     private fun convertDate(releaseDate:String):String{
-        val firstDate = releaseDate
-        val formatter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-        val date = formatter.parse(firstDate)
-        val desiredFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy").format(date)
+        val parser = SimpleDateFormat("yyyy-MM-dd")
+        val formatter = SimpleDateFormat("MMM dd, yyyy")
+        val desiredFormat: String = formatter.format(parser.parse(releaseDate))
+//        val firstDate = releaseDate
+//        val formatter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+//        } else {
+//
+//        }
+//        val date = formatter.parse(firstDate)
+//        val desiredFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy").format(date)
         return desiredFormat;
     }
 
