@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_cinemaDetailsFragment_to_seatFragment"
             app:destination="@id/seatFragment" />
+        <action
+            android:id="@+id/action_cinemaDetailsFragment_self"
+            app:destination="@id/cinemaDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/seatFragment"

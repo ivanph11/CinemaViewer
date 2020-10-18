@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -49,25 +50,37 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
         super.onViewCreated(view, savedInstanceState)
         navController=Navigation.findNavController(view)
         btnToSeatMap.setOnClickListener(this)
+        btnRefresh.setOnClickListener(this)
         subscribeObservers()
     }
     private fun subscribeObservers(){
         viewModel.dataStateMovie.observe(viewLifecycleOwner, Observer { dataState->
             when(dataState){
                 is DataState.Success<Movie>->{
+                    btnToSeatMap.visibility= View.VISIBLE
+                    emptyScreen.isVisible=false
                     displayProgressBar(false)
-                    Log.d(TAG,"Value:"+dataState.data.id)
                     renderScreen(dataState.data)
                     btnToSeatMap.isEnabled=true
+                    container_details.visibility=View.VISIBLE
                 }
                 is DataState.Error->{
                     displayProgressBar(false)
+
+                    if(dataState.exception.message?.contains("Unable to resolve host")!!){
+                        container_details.visibility=View.GONE
+                        emptyScreen.isVisible=true
+                        btnToSeatMap.visibility= View.GONE
+                    }
+
                     displayError(dataState.exception.message)
                     btnToSeatMap.isEnabled=false
                 }
                 is DataState.Loading->{
+                    emptyScreen.isVisible=false
                     displayProgressBar(true)
                     btnToSeatMap.isEnabled=false
+                    container_details.visibility=View.GONE
                 }
             }
         })
@@ -131,11 +144,7 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
 
     private fun displayProgressBar(isDisplayed:Boolean){
         progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
-        if(isDisplayed){
-            container_details.visibility=View.GONE
-        }else{
-            container_details.visibility=View.VISIBLE
-        }
+
     }
     private fun displayError(message:String?){
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
@@ -145,6 +154,9 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
             R.id.btnToSeatMap->{
                 val bundle = bundleOf( "theater" to theater)
                 navController?.navigate(R.id.action_cinemaDetailsFragment_to_seatFragment,bundle)
+            }
+            R.id.btnRefresh->{
+                navController?.navigate(R.id.action_cinemaDetailsFragment_self)
             }
         }
     }

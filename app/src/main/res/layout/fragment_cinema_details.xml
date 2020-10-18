@@ -182,6 +182,42 @@
             android:visibility="gone"
             android:layout_centerInParent="true"
             />
+        <RelativeLayout
+            android:id="@+id/emptyScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_no_internet"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/fragmentFontColor"
+                    android:text="Please check your internet connection"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRefresh"
+                    style="@style/FragmentButton"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textColor="@color/fragmentFontColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Refresh"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnToSeatMap"
             android:layout_alignParentBottom="true"
