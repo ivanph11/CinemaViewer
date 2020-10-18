@@ -20,6 +20,8 @@ import com.felz.cinemaviewer.model.Movie
 import com.felz.cinemaviewer.util.DataState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_cinema_details.*
+import kotlinx.android.synthetic.main.fragment_cinema_details.progress_bar
+import kotlinx.android.synthetic.main.fragment_seat.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.format.DateTimeFormatter
 
@@ -56,14 +58,16 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
                     displayProgressBar(false)
                     Log.d(TAG,"Value:"+dataState.data.id)
                     renderScreen(dataState.data)
+                    btnToSeatMap.isEnabled=true
                 }
                 is DataState.Error->{
                     displayProgressBar(false)
                     displayError(dataState.exception.message)
-
+                    btnToSeatMap.isEnabled=false
                 }
                 is DataState.Loading->{
                     displayProgressBar(true)
+                    btnToSeatMap.isEnabled=false
                 }
             }
         })
@@ -127,6 +131,11 @@ class CinemaDetailsFragment : Fragment() , View.OnClickListener{
 
     private fun displayProgressBar(isDisplayed:Boolean){
         progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+        if(isDisplayed){
+            container_details.visibility=View.GONE
+        }else{
+            container_details.visibility=View.VISIBLE
+        }
     }
     private fun displayError(message:String?){
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show()

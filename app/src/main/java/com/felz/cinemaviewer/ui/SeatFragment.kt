@@ -76,7 +76,6 @@ class SeatFragment : Fragment(),OnItemClickListener {
         viewModel.dataStateSchedule.observe(viewLifecycleOwner, Observer { dataState->
             when(dataState){
                 is DataState.Success<Schedule>->{
-                    displayProgressBar(false)
                     dateAdapter.submitList(dataState.data.dates)
                     defaultCinemaList.addAll(dataState.data.cinemas.get(0).cinemas)
                     defaultTimeList.addAll(dataState.data.times.get(0).times)
@@ -103,6 +102,7 @@ class SeatFragment : Fragment(),OnItemClickListener {
         viewModel.dataStateSeatMap.observe(viewLifecycleOwner, Observer { dataState->
             when(dataState){
                 is DataState.Success<SeatMap>->{
+                    displayProgressBar(false)
                     Log.d(TAG,"SeatMap:"+dataState.data.seatMap.size)
                     seatMapRowAdapter.submitList(dataState.data.seatMap)
                 }
@@ -201,6 +201,11 @@ class SeatFragment : Fragment(),OnItemClickListener {
     }
     private fun displayProgressBar(isDisplayed:Boolean){
         progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+        if(isDisplayed){
+            container.visibility=View.GONE
+        }else{
+            container.visibility=View.VISIBLE
+        }
     }
     private fun displayError(message:String?){
         Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
