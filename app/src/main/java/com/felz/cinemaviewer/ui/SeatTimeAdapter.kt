@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.felz.cinemaviewer.R
 import com.felz.cinemaviewer.callback.OnItemClickListener
 import com.felz.cinemaviewer.model.ScheduleDate
@@ -46,13 +47,20 @@ class SeatTimeAdapter(
 
         fun bind(time:ScheduleTime,position: Int){
             itemView.isSelected = position == selected
-            txtDate.visibility=View.GONE
+            txtDate.setText("₱"+time.price)
             txtDay.setText(time.label)
             itemView.setOnClickListener{
-                selected=position
-                it.isSelected=true
-                listener.onTimeClick(time)
-                notifyDataSetChanged()
+                MaterialDialog(itemView.context).show {
+                    message(text = "Selecting time will reset the seat/s selected. Do you want to continue?")
+                    positiveButton(R.string.agree){dialog->
+                        selected=position
+                        it.isSelected=true
+                        listener.onTimeClick(time)
+                        notifyDataSetChanged()
+                    }
+                    negativeButton(R.string.disagree)
+                }
+
             }
         }
     }

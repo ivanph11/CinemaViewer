@@ -5,6 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.felz.cinemaviewer.model.Movie
 import com.felz.cinemaviewer.model.Schedule
+import com.felz.cinemaviewer.model.SeatMap
 import com.felz.cinemaviewer.repository.MainRepository
 import com.felz.cinemaviewer.util.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,6 +22,8 @@ constructor(
 ): ViewModel(){
     private val _dataStateSchedule: MutableLiveData<DataState<Schedule>> = MutableLiveData()
     val dataStateSchedule: LiveData<DataState<Schedule>> get() =_dataStateSchedule
+    private val _dataStateSeatMap: MutableLiveData<DataState<SeatMap>> = MutableLiveData()
+    val dataStateSeatMap: LiveData<DataState<SeatMap>> get() =_dataStateSeatMap
 
     fun setStateEvent(event: SeatViewModelEvent){
         viewModelScope.launch {
@@ -31,6 +34,12 @@ constructor(
                             _dataStateSchedule.value=dataState
                         }.launchIn(viewModelScope)
                 }
+                is SeatViewModelEvent.GetSeatMap->{
+                    mainRepository.getSeat()
+                        .onEach { dataState ->
+                            _dataStateSeatMap.value=dataState
+                        }.launchIn(viewModelScope)
+                }
             }
         }
     }
@@ -38,4 +47,5 @@ constructor(
 }
 sealed class SeatViewModelEvent{
     object GetSchedule: SeatViewModelEvent()
+    object GetSeatMap: SeatViewModelEvent()
 }

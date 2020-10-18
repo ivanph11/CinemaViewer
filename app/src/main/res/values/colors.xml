@@ -6,6 +6,12 @@
     <color name="colorBlack">#000000</color>
     <color name="colorDarkGray">#5A5A5A</color>
     <color name="colorLightGray">#a6a6a6</color>
+
     <color name="fragmentBackground">#000000</color>
     <color name="fragmentFontColor">#FFFFFF</color>
+
+
+    <color name="colorSeatReserved">#3700B3</color>
+    <color name="colorSeatSelected">#ffd500</color>
+    <color name="colorSeatAvailable">#a6a6a6</color>
 </resources>

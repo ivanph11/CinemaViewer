@@ -8,4 +8,7 @@ interface MovieRetrofit {
 
     @GET("schedule.json")
     suspend fun getSchedule(): ScheduleNetworkEntity
+
+    @GET("seatmap.json")
+    suspend fun getSeat(): SeatMapNetworkEntity
 }

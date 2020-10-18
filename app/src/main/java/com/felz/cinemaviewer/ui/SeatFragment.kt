@@ -33,11 +33,21 @@ class SeatFragment : Fragment(),OnItemClickListener {
     private lateinit var dateAdapter: SeatDateAdapter
     private lateinit var cinemaAdapter: SeatCinemaAdapter
     private lateinit var timeAdapter: SeatTimeAdapter
+    private lateinit var seatMapRowAdapter: SeatMapRowAdapter
+    private var price=0
+    private var updatedCinemaList= arrayListOf<ScheduleCinema>()
+    private var defaultCinemaList= arrayListOf<ScheduleCinema>()
+    private var defaultTimeList= arrayListOf<ScheduleTime>()
+    private var updatedTimeList= arrayListOf<ScheduleTime>()
+    private var selectedSeat= arrayListOf<String>()
+    lateinit  var defaultId:String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         theater = requireArguments().getString("theater").toString()
         viewModel.setStateEvent(SeatViewModelEvent.GetSchedule)
+        viewModel.setStateEvent(SeatViewModelEvent.GetSeatMap)
     }
 
     override fun onCreateView(
@@ -56,33 +66,25 @@ class SeatFragment : Fragment(),OnItemClickListener {
         initRecyclerViewDate()
         initRecyclerViewCinema()
         initRecyclerViewTime()
+        initRecyclerViewMapRow()
     }
     private fun initView(){
         cinema.text=theater
     }
-    private var updatedCinemaList= arrayListOf<ScheduleCinema>()
-    private var defaultCinemaList= arrayListOf<ScheduleCinema>()
-    private var defaultTimeList= arrayListOf<ScheduleTime>()
-    private var updatedTimeList= arrayListOf<ScheduleTime>()
-    lateinit  var defaultId:String
+
     private fun subscribeObservers(){
         viewModel.dataStateSchedule.observe(viewLifecycleOwner, Observer { dataState->
             when(dataState){
                 is DataState.Success<Schedule>->{
                     displayProgressBar(false)
-                    Log.d(TAG,"Value:"+dataState.data.dates.size)
                     dateAdapter.submitList(dataState.data.dates)
                     defaultCinemaList.addAll(dataState.data.cinemas.get(0).cinemas)
                     defaultTimeList.addAll(dataState.data.times.get(0).times)
                     val dateId=dataState.data.dates.get(0).id
                     updateCinemaList(dateId)
-
                     val cinemaId=dataState.data.cinemas.get(0).cinemas.get(0).cinemaId
                     updateTimeList(cinemaId+"::"+dateId)
-
-                    Log.d(TAG,"TimeListSize:"+defaultTimeList.size)
                     cinemaAdapter.submitList(updatedCinemaList)
-                    //renderScreen(dataState.data)
 
                 }
                 is DataState.Error->{
@@ -91,6 +93,27 @@ class SeatFragment : Fragment(),OnItemClickListener {
 
                 }
                 is DataState.Loading->{
+                    displayProgressBar(true)
+                }
+            }
+        })
+        observeMap()
+    }
+    private fun observeMap(){
+        viewModel.dataStateSeatMap.observe(viewLifecycleOwner, Observer { dataState->
+            when(dataState){
+                is DataState.Success<SeatMap>->{
+                    Log.d(TAG,"SeatMap:"+dataState.data.seatMap.size)
+                    seatMapRowAdapter.submitList(dataState.data.seatMap)
+                }
+                is DataState.Error->{
+                    Log.d(TAG,"SeatMap:Error")
+                    displayProgressBar(false)
+                    displayError(dataState.exception.message)
+
+                }
+                is DataState.Loading->{
+                    Log.d(TAG,"SeatMap:Loading")
                     displayProgressBar(true)
                 }
             }
@@ -124,17 +147,36 @@ class SeatFragment : Fragment(),OnItemClickListener {
         timeAdapter.submitList(updatedTimeList)
         try{
             if(updatedTimeList.size>0){
-                updateTotal(updatedTimeList.get(0).price.toInt())
+                price =updatedTimeList.get(0).price.toInt()
+                updateTotal()
             }else{
-                updateTotal(0)
+                price=0
+                updateTotal()
                 Toast.makeText(context,"No Schedule Available",Toast.LENGTH_SHORT).show()
             }
         }catch (e: Exception){
 
         }
     }
-    private fun updateTotal(totalPrice:Int){
+    private fun updateTotal(){
+        var totalPrice=0
+        if(selectedSeat.size>0){
+            totalPrice=selectedSeat.size*price
+        }else{
+            totalPrice=0
+        }
         total.text="₱"+totalPrice.toString()
+        selected_count.text = selectedSeat.size.toString()
+        selected_seat.text = selectedSeat.toString()
+            .replace("[","")
+            .replace("]","")
+    }
+    private fun initRecyclerViewMapRow(){
+        recycler_view_seat_row.apply {
+            layoutManager= LinearLayoutManager(context,LinearLayoutManager.VERTICAL ,false)
+            seatMapRowAdapter = SeatMapRowAdapter(this@SeatFragment)
+            adapter = seatMapRowAdapter
+        }
     }
     private fun initRecyclerViewDate(){
         recycler_view_date.apply {
@@ -172,6 +214,19 @@ class SeatFragment : Fragment(),OnItemClickListener {
     }
 
     override fun onTimeClick(schedule: ScheduleTime) {
-        updateTotal(schedule.price.toInt())
+        price=schedule.price.toInt()
+        selectedSeat.clear()
+        observeMap()
+        updateTotal()
+    }
+
+    override fun onMapClick(seat: String) {
+        if(selectedSeat.contains(seat)){
+            selectedSeat.remove(seat)
+        }else{
+            selectedSeat.add(seat)
+        }
+        updateTotal()
+        Log.d(TAG,"Selected Seat:"+selectedSeat.toString())
     }
 }

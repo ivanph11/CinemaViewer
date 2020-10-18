@@ -82,6 +82,9 @@ dependencies {
     // Recyclerview
     def recyclerview_version = "1.0.0"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+    //custom dialog
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 }
 kapt {
     correctErrorTypes true

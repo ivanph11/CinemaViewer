@@ -8,4 +8,5 @@ interface  OnItemClickListener {
     fun onItemClick(date: ScheduleDate)
     fun onCinemaClick(cinema: ScheduleCinema)
     fun onTimeClick(cinema: ScheduleTime)
+    fun onMapClick(seat: String)
 }
