@@ -172,24 +172,53 @@
                             android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
-
-                <TextView
+                <com.otaliastudios.zoom.ZoomLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:background="@drawable/background_font_border"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="Main Screen"
-                    android:textColor="@color/fragmentFontColor"
-                    android:textSize="14sp" />
+                    android:layout_height="300dp"
+                    app:transformation="centerInside"
+                    app:transformationGravity="auto"
+                    app:alignment="center"
+                    app:overScrollHorizontal="true"
+                    app:overScrollVertical="true"
+                    app:overPinchable="true"
+                    app:horizontalPanEnabled="true"
+                    app:verticalPanEnabled="true"
+                    app:zoomEnabled="true"
+                    app:flingEnabled="true"
+                    app:scrollEnabled="true"
+                    app:oneFingerScrollEnabled="true"
+                    app:twoFingersScrollEnabled="true"
+                    app:threeFingersScrollEnabled="true"
+                    app:minZoom="1"
+                    app:minZoomType="zoom"
+                    app:maxZoom="4"
+                    app:maxZoomType="zoom"
+                    app:animationDuration="280"
+                    app:hasClickableChildren="true">
+                    <LinearLayout
+                        android:layout_width="390dp"
+                        android:layout_height="300dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:padding="2dp"
+                            android:text="Main Screen"
+                            android:gravity="center"
+                            android:background="@drawable/background_font_border"
+                            android:textColor="@color/fragmentFontColor"
+                            android:textSize="14sp" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view_seat_row"
+                            android:nestedScrollingEnabled="false"
+                            android:layout_width="390dp"
+                            android:layout_height="300dp"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_seat_row"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
+
+                </com.otaliastudios.zoom.ZoomLayout>
             </LinearLayout>
         </LinearLayout>
 

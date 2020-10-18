@@ -33,9 +33,6 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-//    kotlinOptions.freeCompilerArgs += [
-//            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-//            "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi"]
 }
 
 dependencies {
@@ -84,7 +81,12 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
     //custom dialog
-    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    def material_dialog="3.3.0"
+    implementation "com.afollestad.material-dialogs:core:$material_dialog"
+
+    //zoomlayout
+    def zoom_layout_version="1.8.0"
+    implementation "com.otaliastudios:zoomlayout:$zoom_layout_version"
 }
 kapt {
     correctErrorTypes true
